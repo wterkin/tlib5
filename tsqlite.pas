@@ -29,6 +29,7 @@ type
          function    eof() : Boolean;
          procedure   next();
          procedure   close();
+         function    count() : Integer;
          function    isClosed() : Boolean;
          procedure   parameter(psParamName : String; psParameter : String); overload;
          procedure   parameter(psParamName : String; piParameter : Integer); overload;
@@ -57,7 +58,8 @@ begin
   if poDataSource <> Nil then
   begin
 
-  	moQuery.DataSource := poDataSource;
+  	//moQuery.DataSource := poDataSource;
+    poDataSource.DataSet := moQuery;
 	end;
 end;
 
@@ -130,6 +132,15 @@ procedure TEasySQLite.close;
 begin
 
   moQuery.Close();
+end;
+
+function TEasySQLite.count: Integer;
+begin
+
+  store();
+  moQuery.Last;
+  reStore();
+  result := moQuery.RecordCount;
 end;
 
 
