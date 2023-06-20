@@ -18,6 +18,7 @@ type
          moQuery : TSQLQuery;
          msIDFieldName : String;
          miCurrentRowID : Integer;
+         msSQL : String;
        public
 
          constructor Create();
@@ -26,6 +27,7 @@ type
          function    open(pblReload : Boolean = False) : Boolean;
          procedure   store();
          procedure   reStore();
+         procedure   refresh();
          function    eof() : Boolean;
          procedure   next();
          procedure   close();
@@ -77,6 +79,7 @@ begin
   moQuery.Params.Clear;
   moQuery.SQL.Delimiter:=LF;
   moQuery.SQL.AddDelimitedText(psSQL);
+  msSQL := psSQL;
 end;
 
 
@@ -110,7 +113,29 @@ end;
 procedure TEasySQLite.reStore();
 begin
 
-  moQuery.Locate(msIDFieldName, miCurrentRowID{%H-}, []);
+  if miCurrentRowID > 0 then
+  begin
+
+    moQuery.Locate(msIDFieldName, miCurrentRowID{%H-}, []);
+		miCurrentRowID := -1;
+	end;
+end;
+
+
+procedure TEasySQLite.refresh;
+begin
+
+  if moQuery.State <> dsInactive then
+  begin
+
+    moQuery.close();
+	end;
+  moQuery.Params.Clear;
+  moQuery.SQL.Delimiter:=LF;
+  moQuery.SQL.AddDelimitedText(msSQL);
+  moQuery.parameter('pstatus', ciStatusDeleted);
+  moQuery.open();
+  moQuery.reStore();
 end;
 
 
@@ -133,6 +158,7 @@ begin
 
   moQuery.Close();
 end;
+
 
 function TEasySQLite.count: Integer;
 begin
