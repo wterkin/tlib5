@@ -130,12 +130,8 @@ begin
 
     moQuery.close();
 	end;
-  moQuery.Params.Clear;
-  moQuery.SQL.Delimiter:=LF;
-  moQuery.SQL.AddDelimitedText(msSQL);
-  moQuery.parameter('pstatus', ciStatusDeleted);
-  moQuery.open();
-  moQuery.reStore();
+  open();
+  reStore();
 end;
 
 

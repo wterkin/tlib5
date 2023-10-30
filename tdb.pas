@@ -20,6 +20,7 @@ procedure restartTransaction(poTransaction : TSQLTransaction);
 
 implementation
 
+
 procedure initializeQuery(poQuery : TSQLQuery; psSQL : String; pblRestartTransaction : Boolean);
 begin
 
@@ -35,9 +36,10 @@ begin
   end;
   poQuery.SQL.Clear;
   poQuery.Params.Clear;
-  poQuery.SQL.Delimiter:=LF;
-  poQuery.SQL.AddDelimitedText(psSQL);
+  //poQuery.SQL.Delimiter:=CR;
+  poQuery.SQL.AddDelimitedText(psSQL, #13, True);
 end;
+
 
 procedure restartTransaction(poTransaction : TSQLTransaction);
 begin
@@ -45,6 +47,7 @@ begin
   poTransaction.EndTransaction;
   poTransaction.StartTransaction;
 end;
+
 
 end.
 

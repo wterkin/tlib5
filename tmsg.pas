@@ -49,7 +49,7 @@ end;
 procedure fatalError(psErrorDesc, psDetail : String);
 begin
 
-  MessageDlg(psErrorDesc, psDetail, mtError, [mbOK], 'error');
+  MessageDlg(psDetail, psErrorDesc, mtError, [mbOK], 'error');
 end;
 
 
