@@ -5,7 +5,7 @@ unit tstr;
 interface
 
 uses
-  Classes, SysUtils, LazUTF8
+  Classes, SysUtils //, LazUTF8
   ;
 
 
@@ -80,9 +80,7 @@ function isEmpty(psLine : String) : Boolean;
     @code(s:=upperTrimLine('   Вот такая вот... загогулина.    ')); }
 function upperTrimLine(psLine : String) : String;
 
-
-
-
+function findExtension(psFileName : String) : Integer;
 
 
 implementation
@@ -96,7 +94,7 @@ begin
   begin
 
     lsLine:=Trim(psLine);
-    if lsLine[UTF8Length(lsLine)]<>DirectorySeparator then
+    if lsLine[Length(lsLine)]<>DirectorySeparator then
     begin
 
       lsLine:=lsLine+DirectorySeparator;
@@ -104,7 +102,6 @@ begin
   end;
   Result:=lsLine;
 end;
-
 
 
 function alignFill(psLine : String; piWidth : Integer; piAlign : Integer = ciAlLeft; pcFill : Char = ' ') : String;
@@ -174,7 +171,7 @@ var iLen : Integer;
 begin
 
   Result := -1;
-  iLen := UTF8Length(sLine);
+  iLen := Length(sLine);
   for iChar := iLen downto 1 do
   begin
 
@@ -186,6 +183,7 @@ begin
     end;
   end;
 end;
+
 
 function cut(var psLine : String; piFrom : Integer; piHowMany : Integer=-1) : String;
 var liLen : Integer;
@@ -210,6 +208,7 @@ begin
   end;
 end;
 
+
 function deleteTail(psLine : String; piCount : Integer = 1) : String;
 var lsLine : String;
 begin
@@ -218,14 +217,14 @@ begin
   if piCount>=1 then
   begin
 
-    if (piCount>=UTF8Length(psLine)) then
+    if (piCount>=Length(psLine)) then
     begin
 
       lsLine:='';
     end else
     begin
 
-      UTF8Delete(lsLine,UTF8Length(lsLine)-Pred(piCount),piCount);
+      Delete(lsLine,Length(lsLine)-Pred(piCount),piCount);
     end;
   end;
   Result:=lsLine;
@@ -238,12 +237,12 @@ var sLine : String;
 begin
 
   sLine := sInputLine;
-  iPosition := UTF8Pos(sSubstr, sLine);
+  iPosition := Pos(sSubstr, sLine);
   while iPosition > 0 do
   begin
 
-    UTF8Delete(sLine, iPosition, iCount);
-    iPosition := UTF8Pos(sSubstr, sLine);
+    Delete(sLine, iPosition, iCount);
+    iPosition := Pos(sSubstr, sLine);
   end;
   Result:=sLine;
 end;
@@ -252,15 +251,16 @@ end;
 function isEmpty(psLine : String) : Boolean;
 begin
 
-  Result:=UTF8Length(Trim(psLine))=0;
+  Result:=Length(Trim(psLine))=0;
 end;      
 
 
 function upperTrimLine(psLine : String) : String;
 begin
 
-  Result:=UTF8UpperCase(Trim(psLine));
+  Result:=UpperCase(Trim(psLine));
 end;
+
 
 function hex2int(psHex : String) : LongInt;
 begin
@@ -281,7 +281,7 @@ var liLen   : Integer;
 begin
 
   Result := '';
-  liLen:=UTF8Length(psLine);
+  liLen:=Length(psLine);
   // *** Если номер начального символа по модулю меньше длины...
   if Abs(piFrom) < liLen then 
   begin
@@ -303,15 +303,30 @@ begin
   liCount := Abs(piHowMany);
   if (liCount >= 1) and (liPos + liCount > liLen) then begin
   
-    Result := UTF8Copy(psLine, liPos, liCount);
+    Result := Copy(psLine, liPos, liCount);
     if pblCut then
     begin
 
-      UTF8Delete(psLine, liPos, liCount);
+      Delete(psLine, liPos, liCount);
     end;
   end;
 end;
 
+
+function findExtension(psFileName : String) : Integer;
+var liPos,
+    liPrevPos : Integer;
+begin
+
+  liPrevPos:=0;
+  liPos:=Pos('.',psFileName);
+  while liPos>0 do begin
+
+    liPrevPos:=liPos;
+    liPos:=Pos('.',psFileName,Succ(liPos));
+  end;
+  Result:=liPrevPos;
+end;
 
 end.
 

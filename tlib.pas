@@ -2,7 +2,7 @@ unit tlib;
 
 interface
 
-uses Sysutils, Graphics, Process
+uses Sysutils,  Process, Graph
   , tstr
   ;
 
@@ -12,8 +12,8 @@ function iif(const ACondition: Boolean; const ATrueResult, AFalseResult: Integer
 function iif(const ACondition: Boolean; const ATrueResult, AFalseResult: Double): Double; overload;
 function iif(const ACondition: Boolean; const ATrueResult, AFalseResult: String): String; overload;
 function iif(const ACondition: Boolean; const ATrueResult, AFalseResult: Variant): Variant; overload;
-function serializeFont(poFont : TFont) : String;
-procedure deserializeFont(poFont : TFont; psLine : String);
+//function serializeFont(poFont : TFont) : String;
+//procedure deserializeFont(poFont : TFont; psLine : String);
 procedure EasyExec(psProgramm, psArguments : String; pblWait : Boolean = False; pblHideWindow : Boolean = False);
 
 
@@ -66,7 +66,7 @@ begin
     Result := AFalseResult;
 end;
 
-
+(*
 function serializeFont(poFont : TFont) : String;
 var liStyle : Integer;
 begin
@@ -180,7 +180,7 @@ begin
     end;
   end;
 end;
-
+*)
 
 procedure EasyExec(psProgramm, psArguments : String; pblWait : Boolean = False; pblHideWindow : Boolean = False);
 var loProc : TProcess;

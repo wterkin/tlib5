@@ -109,7 +109,7 @@ end;
 procedure TEasyIniManager.write(psSection, psName : String; poFont : TFont);
 begin
 
-  write(psSection,psName,SerializeFont(poFont));
+  //write(psSection,psName,SerializeFont(poFont));
 end;
 
 
@@ -207,7 +207,7 @@ begin
   end else
   begin
 
-    DeSerializeFont(loFont,lsLine);
+    //DeSerializeFont(loFont,lsLine);
 	end;
   Result := loFont;
 end;
